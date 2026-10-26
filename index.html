@@ -6,83 +6,91 @@
 <title>SERVIDOR DE TESTE - Gerador de Agenda de Eventos - Univassouras</title>
 <style>
 :root{
-  --burgundy:#8d1420;
-  --burgundy-dark:#6f1018;
-  --yellow:#ffc22d;
-  --paper:#ffffff;
-  --ink:#4f2528;
-  --ui:#f4f5f7;
-  --border:#d8dbe0;
-  --shadow:0 10px 28px rgba(0,0,0,.12);
+  /* Paleta ENIC 2026: roxo, ameixa, lilás, malva e branco rosado. */
+  --burgundy:#6D0CAB;
+  --burgundy-dark:#581A4B;
+  --yellow:#E5D4E6;
+  --paper:#F7F0F7;
+  --ink:#581A4B;
+  --ui:#F7F0F7;
+  --border:#B6AAB8;
+  --shadow:0 10px 28px rgba(88,26,75,.2);
 }
 *{box-sizing:border-box}
 body{
   margin:0;
   font-family:Arial,Helvetica,sans-serif;
-  background:#e9ebef;
-  color:#20242a;
+  background:#E5D4E6;
+  color:var(--ink);
 }
 button,input,select,textarea{font:inherit}
 .appbar{
   position:sticky; top:0; z-index:20;
-  background:#fff;
-  border-bottom:1px solid #ddd;
+  background:var(--paper);
+  border-bottom:1px solid var(--border);
   padding:12px 18px;
   display:flex; gap:10px; align-items:center; flex-wrap:wrap;
 }
 .appbar .brand{font-weight:800;color:var(--burgundy);margin-right:auto}
 .btn{
   border:0; border-radius:8px; padding:9px 13px; cursor:pointer;
-  background:#e6e8ec; color:#23262b; font-weight:700;
+  background:var(--yellow); color:var(--burgundy-dark); font-weight:700;
 }
 .btn.primary{background:var(--burgundy);color:#fff}
-.btn.yellow{background:var(--yellow);color:#5e2024}
-.btn.danger{background:#fbe7e8;color:#9a1d26}
+.btn.yellow{background:var(--yellow);color:var(--burgundy-dark)}
+.btn.danger{background:#D9C4DB;color:var(--burgundy-dark)}
+.btn:hover{filter:brightness(.95)}
+.btn:focus-visible,.tab:focus-visible,.event-actions button:focus-visible{
+  outline:3px solid var(--burgundy);outline-offset:2px
+}
 .shell{
   display:grid;
   grid-template-columns:minmax(380px,540px) 1fr;
   min-height:calc(100vh - 58px);
 }
 .editor{
-  background:#fff;
+  background:var(--paper);
   padding:18px;
-  border-right:1px solid #ddd;
+  border-right:1px solid var(--border);
   overflow:auto;
   max-height:auto;
 }
-.preview-pane{padding:20px;overflow:auto}
+.preview-pane{padding:20px;overflow:auto;background:#E5D4E6}
 .field{margin-bottom:12px}
-.field label{display:block;font-size:12px;font-weight:800;margin-bottom:5px;color:#555}
+.field label{display:block;font-size:12px;font-weight:800;margin-bottom:5px;color:var(--burgundy-dark)}
 .field input,.field select,.field textarea{
   width:100%; border:1px solid var(--border); border-radius:7px;
   padding:9px 10px; background:#fff;
 }
+.field input:focus,.field select:focus,.field textarea:focus{
+  outline:2px solid var(--burgundy);outline-offset:1px
+}
 .field textarea{min-height:66px;resize:vertical}
 .row{display:grid;grid-template-columns:1fr 1fr;gap:10px}
 .week-box{
-  padding:14px;border:1px solid var(--border);border-radius:10px;background:#fafafa;margin-bottom:14px
+  padding:14px;border:1px solid var(--border);border-radius:10px;background:#fff;margin-bottom:14px
 }
 .tabs{display:flex;gap:5px;flex-wrap:wrap;margin-bottom:14px}
 .tab{
-  border:1px solid var(--border); background:#fff; padding:8px 9px; border-radius:7px; cursor:pointer;
+  border:1px solid var(--border); background:#fff; color:var(--burgundy-dark); padding:8px 9px; border-radius:7px; cursor:pointer;
   font-size:12px;font-weight:800;
 }
 .tab.active{background:var(--burgundy);color:#fff;border-color:var(--burgundy)}
 .event-form{
-  border:1px solid var(--border);border-radius:10px;padding:13px;background:#fbfbfc
+  border:1px solid var(--border);border-radius:10px;padding:13px;background:#fff
 }
 .event-list{margin-top:14px}
 .event-item{
   border:1px solid var(--border);border-radius:9px;padding:10px;margin-bottom:8px;background:#fff
 }
 .event-item .title{font-weight:800;color:var(--burgundy);margin-bottom:4px}
-.event-item .meta{font-size:12px;color:#60656d}
+.event-item .meta{font-size:12px;color:#65536C}
 .event-actions{display:flex;gap:5px;margin-top:8px;flex-wrap:wrap}
-.event-actions button{padding:5px 8px;font-size:11px;border:1px solid #d2d5da;background:#f4f5f7;border-radius:6px;cursor:pointer}
-.help{font-size:12px;color:#666;line-height:1.45;margin-top:10px}
+.event-actions button{padding:5px 8px;font-size:11px;border:1px solid var(--border);background:var(--yellow);color:var(--burgundy-dark);border-radius:6px;cursor:pointer}
+.help{font-size:12px;color:#65536C;line-height:1.45;margin-top:10px}
 .checkbox{display:flex;align-items:center;gap:8px;font-size:13px}
 .checkbox input{width:auto}
-.preview-title{font-weight:800;margin-bottom:12px}
+.preview-title{font-weight:800;margin-bottom:12px;color:var(--burgundy-dark)}
 .preview-stack{display:flex;flex-direction:column;align-items:center;gap:22px}
 
 /* Visual page: 810 x 1440, matching the Python generator. */
@@ -93,7 +101,7 @@ button,input,select,textarea{font:inherit}
   overflow:hidden;background:var(--burgundy);box-shadow:var(--shadow);
 }
 .cover{
-  background-image: url("foto_modelo2.png");
+  background-image:linear-gradient(rgba(109,12,171,.10),rgba(88,26,75,.18)),url("foto_modelo2.png");
   background-size:100% 100%;
   background-repeat:no-repeat;
   background-position:center;
@@ -116,7 +124,7 @@ button,input,select,textarea{font:inherit}
 }
 .day-name{font-size:31px;font-weight:900;color:#fff;line-height:1}
 .date-pill{
-  height:60px;background:var(--yellow);color:#6c1a20;border-radius:13px;
+  height:60px;background:var(--yellow);color:var(--burgundy-dark);border-radius:13px;
   display:flex;align-items:center;justify-content:center;
   font-size:29px;font-weight:900;
 }
@@ -126,7 +134,7 @@ button,input,select,textarea{font:inherit}
 }
 .cont-tag{color:var(--yellow);font-size:11px;font-weight:900}
 .event-card{
-  margin-top:16px;background:#fff;border-radius:30px;
+  margin-top:16px;background:var(--paper);border-radius:30px;
   padding:18px 20px 18px 15px;
   display:grid;grid-template-columns:125px 1fr;gap:16px;
   min-height:148px;color:var(--ink);
@@ -135,15 +143,15 @@ button,input,select,textarea{font:inherit}
   background:var(--yellow);border-radius:12px;
   min-height:64px;height:max-content;
   padding:10px 7px;display:flex;align-items:center;justify-content:center;
-  text-align:center;font-size:18px;line-height:1.05;font-weight:900;color:#5c2024;
+  text-align:center;font-size:18px;line-height:1.05;font-weight:900;color:var(--burgundy-dark);
 }
 .event-title{font-size:18px;line-height:1.08;font-weight:900;color:var(--burgundy);overflow-wrap:anywhere}
-.event-course{font-size:14.5px;line-height:1.15;margin-top:18px;color:#2d3035;overflow-wrap:anywhere}
+.event-course{font-size:14.5px;line-height:1.15;margin-top:18px;color:var(--ink);overflow-wrap:anywhere}
 .event-location{font-size:13.5px;line-height:1.15;margin-top:18px;color:var(--burgundy);overflow-wrap:anywhere}
 .empty-card{
-  margin-top:16px;background:#fff;border-radius:30px;min-height:125px;
+  margin-top:16px;background:var(--paper);border-radius:30px;min-height:125px;
   display:flex;align-items:center;justify-content:center;text-align:center;
-  color:#5d6168;font-size:17px;padding:25px;
+  color:var(--burgundy-dark);font-size:17px;padding:25px;
 }
 .footer{
   position:absolute;left:0;bottom:0;width:810px;height:85px;background:var(--burgundy-dark);
@@ -155,11 +163,11 @@ button,input,select,textarea{font:inherit}
 .measure-box{
   position:absolute;left:-10000px;top:-10000px;visibility:hidden;pointer-events:none;width:730px;
 }
-.no-events-msg{font-size:13px;color:#777;padding:8px 0}
+.no-events-msg{font-size:13px;color:#65536C;padding:8px 0}
 
 @media(max-width:1050px){
   .shell{grid-template-columns:1fr}
-  .{max-height:none;border-right:0;border-bottom:1px solid #ddd}
+  .editor{max-height:none;border-right:0;border-bottom:1px solid var(--border)}
   .preview-pane{overflow:visible}
 }
 @media print{
@@ -177,7 +185,7 @@ button,input,select,textarea{font:inherit}
     height:auto!important;
     margin:0!important;
     padding:0!important;
-    background:#8d1420!important;
+    background:#6D0CAB!important;
   }
 
   .appbar,.editor,.preview-title{
@@ -211,7 +219,7 @@ button,input,select,textarea{font:inherit}
     padding:0!important;
     position:relative!important;
     overflow:hidden!important;
-    background:#8d1420!important;
+    background:#6D0CAB!important;
 
     page-break-after:always!important;
     break-after:page!important;
