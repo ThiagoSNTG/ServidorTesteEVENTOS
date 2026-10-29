@@ -1,0 +1,963 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Agenda ENIC 2026 • Saquarema | Univassouras</title>
+<style>
+:root{
+  /* Paleta ENIC 2026: roxo, ameixa, lilás, malva e branco rosado. */
+  --burgundy:#6D0CAB;
+  --burgundy-dark:#581A4B;
+  --yellow:#E5D4E6;
+  --paper:#F7F0F7;
+  --ink:#581A4B;
+  --ui:#F7F0F7;
+  --border:#B6AAB8;
+  --shadow:0 10px 28px rgba(88,26,75,.2);
+}
+*{box-sizing:border-box}
+body{
+  margin:0;
+  font-family:Arial,Helvetica,sans-serif;
+  background:#E5D4E6;
+  color:var(--ink);
+}
+button,input,select,textarea{font:inherit}
+.appbar{
+  position:sticky; top:0; z-index:20;
+  background:var(--paper);
+  border-bottom:1px solid var(--border);
+  padding:12px 18px;
+  display:flex; gap:10px; align-items:center; flex-wrap:wrap;
+}
+.appbar .brand{font-weight:800;color:var(--burgundy);margin-right:auto}
+.btn{
+  border:0; border-radius:8px; padding:9px 13px; cursor:pointer;
+  background:var(--yellow); color:var(--burgundy-dark); font-weight:700;
+}
+.btn.primary{background:var(--burgundy);color:#fff}
+.btn.back{display:inline-flex;align-items:center;text-decoration:none;background:var(--paper);color:var(--burgundy-dark);border:1px solid var(--border)}
+.btn.yellow{background:var(--yellow);color:var(--burgundy-dark)}
+.btn.danger{background:#D9C4DB;color:var(--burgundy-dark)}
+.btn:hover{filter:brightness(.95)}
+.btn:focus-visible,.tab:focus-visible,.event-actions button:focus-visible{
+  outline:3px solid var(--burgundy);outline-offset:2px
+}
+.shell{
+  display:grid;
+  grid-template-columns:minmax(380px,540px) 1fr;
+  min-height:calc(100vh - 58px);
+}
+.editor{
+  background:var(--paper);
+  padding:18px;
+  border-right:1px solid var(--border);
+  overflow:auto;
+  max-height:auto;
+}
+.preview-pane{padding:20px;overflow:auto;background:#E5D4E6}
+.field{margin-bottom:12px}
+.field label{display:block;font-size:12px;font-weight:800;margin-bottom:5px;color:var(--burgundy-dark)}
+.field input,.field select,.field textarea{
+  width:100%; border:1px solid var(--border); border-radius:7px;
+  padding:9px 10px; background:#fff;
+}
+.field input:focus,.field select:focus,.field textarea:focus{
+  outline:2px solid var(--burgundy);outline-offset:1px
+}
+.field textarea{min-height:66px;resize:vertical}
+.row{display:grid;grid-template-columns:1fr 1fr;gap:10px}
+.week-box{
+  padding:14px;border:1px solid var(--border);border-radius:10px;background:#fff;margin-bottom:14px
+}
+.tabs{display:flex;gap:5px;flex-wrap:wrap;margin-bottom:14px}
+.tab{
+  border:1px solid var(--border); background:#fff; color:var(--burgundy-dark); padding:8px 9px; border-radius:7px; cursor:pointer;
+  font-size:12px;font-weight:800;
+}
+.tab.active{background:var(--burgundy);color:#fff;border-color:var(--burgundy)}
+.event-form{
+  border:1px solid var(--border);border-radius:10px;padding:13px;background:#fff
+}
+.event-list{margin-top:14px}
+.event-item{
+  border:1px solid var(--border);border-radius:9px;padding:10px;margin-bottom:8px;background:#fff
+}
+.event-item .title{font-weight:800;color:var(--burgundy);margin-bottom:4px}
+.event-item .meta{font-size:12px;color:#65536C}
+.event-actions{display:flex;gap:5px;margin-top:8px;flex-wrap:wrap}
+.event-actions button{padding:5px 8px;font-size:11px;border:1px solid var(--border);background:var(--yellow);color:var(--burgundy-dark);border-radius:6px;cursor:pointer}
+.help{font-size:12px;color:#65536C;line-height:1.45;margin-top:10px}
+.checkbox{display:flex;align-items:center;gap:8px;font-size:13px}
+.checkbox input{width:auto}
+.preview-title{font-weight:800;margin-bottom:12px;color:var(--burgundy-dark)}
+.preview-stack{display:flex;flex-direction:column;align-items:center;gap:22px}
+
+/* Visual page: 810 x 1440, matching the Python generator. */
+.sheet-wrap{width:445.5px;height:792px;position:relative}
+.sheet{
+  width:810px;height:1440px;position:absolute;left:0;top:0;
+  transform:scale(.55);transform-origin:top left;
+  overflow:hidden;background:var(--burgundy);box-shadow:var(--shadow);
+}
+.cover{
+  background-image:linear-gradient(rgba(109,12,171,.10),rgba(88,26,75,.18)),url("Foto_Enic_Saquarema.png");
+  background-size:100% 100%;
+  background-repeat:no-repeat;
+  background-position:center;
+}
+.cover .period-pill{
+  position:absolute;left:55px;top:742px;width:665px;height:78px;
+  display:flex;align-items:center;justify-content:center;
+  color:#ffffff;font-weight:900;font-size:32px;text-align:center;padding:0 30px;
+}
+.content-page{background:var(--burgundy)}
+.page-body{
+  position:absolute;left:0;top:0;width:810px;height:1355px;
+  padding:30px 40px 24px;
+  overflow:hidden;
+}
+.day-block{width:730px}
+.day-block + .day-block{margin-top:28px;padding-top:14px;border-top:2px solid var(--yellow)}
+.day-head{
+  display:grid;grid-template-columns:1fr 255px;align-items:center;gap:16px;
+}
+.day-name{font-size:31px;font-weight:900;color:#fff;line-height:1}
+.date-pill{
+  height:60px;background:var(--yellow);color:var(--burgundy-dark);border-radius:13px;
+  display:flex;align-items:center;justify-content:center;
+  font-size:29px;font-weight:900;
+}
+.subtitle{
+  color:#fff;font-size:13px;margin:16px 2px 0;letter-spacing:.1px;
+  display:flex;justify-content:space-between;gap:10px
+}
+.cont-tag{color:var(--yellow);font-size:11px;font-weight:900}
+.event-card{
+  margin-top:16px;background:var(--paper);border-radius:30px;
+  padding:18px 20px 18px 15px;
+  display:grid;grid-template-columns:125px 1fr;gap:16px;
+  min-height:148px;color:var(--ink);
+}
+.time-pill{
+  background:var(--yellow);border-radius:12px;
+  min-height:64px;height:max-content;
+  padding:10px 7px;display:flex;align-items:center;justify-content:center;
+  text-align:center;font-size:18px;line-height:1.05;font-weight:900;color:var(--burgundy-dark);
+}
+.event-title{font-size:18px;line-height:1.08;font-weight:900;color:var(--burgundy);overflow-wrap:anywhere}
+.event-course{font-size:14.5px;line-height:1.15;margin-top:18px;color:var(--ink);overflow-wrap:anywhere}
+.event-location{font-size:13.5px;line-height:1.15;margin-top:18px;color:var(--burgundy);overflow-wrap:anywhere}
+.empty-card{
+  margin-top:16px;background:var(--paper);border-radius:30px;min-height:125px;
+  display:flex;align-items:center;justify-content:center;text-align:center;
+  color:var(--burgundy-dark);font-size:17px;padding:25px;
+}
+.footer{
+  position:absolute;left:0;bottom:0;width:810px;height:85px;background:var(--burgundy-dark);
+  color:#fff;display:flex;justify-content:space-between;align-items:center;padding:15px 58px 14px 58px;
+}
+.footer .logo-main{font-size:24px;font-weight:900;letter-spacing:.3px}
+.footer .logo-sub{font-size:10.5px;font-weight:800;margin-top:3px}
+.footer .tagline{font-size:10.5px;align-self:center}
+.measure-box{
+  position:absolute;left:-10000px;top:-10000px;visibility:hidden;pointer-events:none;width:730px;
+}
+.no-events-msg{font-size:13px;color:#65536C;padding:8px 0}
+
+@media(max-width:1050px){
+  .shell{grid-template-columns:1fr}
+  .editor{max-height:none;border-right:0;border-bottom:1px solid var(--border)}
+  .preview-pane{overflow:visible}
+}
+@media print{
+  /*
+    Formato personalizado em retrato 9:16.
+    135 x 240 mm = proporção exata 9:16.
+  */
+  @page{
+    size:135mm 240mm;
+    margin:0;
+  }
+
+  html,body{
+    width:135mm!important;
+    height:auto!important;
+    margin:0!important;
+    padding:0!important;
+    background:#6D0CAB!important;
+  }
+
+  .appbar,.editor,.preview-title{
+    display:none!important;
+  }
+
+  .shell{
+    display:block!important;
+    width:135mm!important;
+    margin:0!important;
+    padding:0!important;
+  }
+
+  .preview-pane{
+    width:135mm!important;
+    margin:0!important;
+    padding:0!important;
+  }
+
+  .preview-stack{
+    display:block!important;
+    width:135mm!important;
+    margin:0!important;
+    padding:0!important;
+  }
+
+  .sheet-wrap{
+    width:135mm!important;
+    height:240mm!important;
+    margin:0!important;
+    padding:0!important;
+    position:relative!important;
+    overflow:hidden!important;
+    background:#6D0CAB!important;
+
+    page-break-after:always!important;
+    break-after:page!important;
+
+    -webkit-print-color-adjust:exact!important;
+    print-color-adjust:exact!important;
+  }
+
+  .sheet-wrap:last-child{
+    page-break-after:auto!important;
+    break-after:auto!important;
+  }
+
+.sheet{
+    width:810px!important;
+    height:1440px!important;
+
+    position:absolute!important;
+    left:0!important;
+    top:0!important;
+
+    /*
+      Evita o problema de recorte da imagem da capa
+      durante a geração do PDF no Chrome/Edge.
+    */
+    transform:none!important;
+    zoom:0.62992126!important;
+
+    box-shadow:none!important;
+
+    -webkit-print-color-adjust:exact!important;
+    print-color-adjust:exact!important;
+}
+
+.cover{
+    background-size:810px 1440px!important;
+    background-position:0 0!important;
+    background-repeat:no-repeat!important;
+
+    -webkit-print-color-adjust:exact!important;
+    print-color-adjust:exact!important;
+}
+  
+}
+</style>
+</head>
+<body>
+<div class="appbar">
+  <div class="brand">Agenda de Eventos • Saquarema</div>
+  <a class="btn back" href="index.html">← Escolher campus</a>
+  <button class="btn" onclick="saveJSON()">Salvar semana</button>
+  <button class="btn" onclick="document.getElementById('loadFile').click()">Carregar semana</button>
+  <input id="loadFile" type="file" accept=".json,application/json" hidden onchange="loadJSONFile(event)">
+  <button class="btn danger" onclick="clearAll()">Limpar</button>
+  <button class="btn yellow" onclick="renderPreview()">Atualizar visualização</button>
+  <button class="btn primary" onclick="printPDF()">Gerar PDF</button>
+</div>
+
+<div class="shell">
+  <aside class="editor">
+    <div class="week-box">
+      <div class="field">
+        <label>Período da semana</label>
+        <input id="period" placeholder="Ex.: 05/10 a 10/10" oninput="persist();renderPreviewDebounced()">
+      </div>
+      <label class="checkbox">
+        <input id="includeEmpty" type="checkbox" onchange="persist();renderPreview()">
+        Incluir dias sem eventos
+      </label>
+    </div>
+
+    <div class="tabs" id="dayTabs"></div>
+
+    <div class="field">
+      <label>Data do dia selecionado</label>
+      <input id="dayDate" placeholder="Ex.: 05/10" oninput="updateDayDate(this.value)">
+    </div>
+
+    <div class="event-form">
+      <input type="hidden" id="editingIndex" value="-1">
+      <div class="row">
+        <div class="field">
+          <label>Horário</label>
+          <input id="evTime" placeholder="Ex.: 10h às 12h">
+        </div>
+        <div class="field">
+          <label>Tipo</label>
+          <select id="evKind">
+            <option>Atividade</option>
+            <option>Aula Prática Externa</option>
+            <option>Ação Extensionista</option>
+            <option>Evento</option>
+            <option>Oficina</option>
+            <option>Palestra</option>
+            <option>Reunião</option>
+            <option>Visita técnica</option>
+            </select>
+        </div>
+      </div>
+      <div class="field">
+        <label>Título do evento</label>
+        <textarea id="evTitle" placeholder="Digite o título do evento"></textarea>
+      </div>
+      <div class="field">
+        <label>Curso / Responsável</label>
+        <input id="evCourse" placeholder="Ex.: Medicina Veterinária - Prof. Nome">
+      </div>
+      <div class="row">
+        <div class="field">
+          <label>Local / link</label>
+          <input id="evLocation" list="locaisSaquarema" placeholder="Ex.: Campus III - Gravatá">
+          <datalist id="locaisSaquarema">
+            <option value="Campus III - Gravatá"></option>
+          </datalist>
+        </div>
+        <div class="field">
+          <label>Modalidade</label>
+          <select id="evMode">
+            <option>Presencial</option>
+            <option>Remoto</option>
+          </select>
+        </div>
+      </div>
+      <button class="btn primary" style="width:100%" onclick="addOrUpdateEvent()">Adicionar evento</button>
+    </div>
+
+    <div class="event-list" id="eventList"></div>
+    <div class="help">
+      O encaixe é automático: dias pequenos podem compartilhar a mesma página. Se um dia tiver eventos demais, ele é dividido em páginas de continuação. O botão <b>Gerar PDF</b> abre a impressão do navegador; escolha <b>Salvar como PDF</b>.
+    </div>
+  </aside>
+
+  <main class="preview-pane">
+    <div class="preview-title">Visualização</div>
+    <div class="preview-stack" id="previewPages"></div>
+  </main>
+</div>
+
+<div class="measure-box" id="measureBox"></div>
+
+<script>
+const DAY_NAMES = [
+  ["SEGUNDA","Segunda-feira"],
+  ["TERÇA","Terça-feira"],
+  ["QUARTA","Quarta-feira"],
+  ["QUINTA","Quinta-feira"],
+  ["SEXTA","Sexta-feira"],
+  ["SÁBADO","Sábado"],
+  ["DOMINGO","Domingo"]
+];
+
+const PACK_HEIGHT = 1300;
+const BETWEEN_BLOCKS = 44;
+const STORAGE_KEY = "agenda_univassouras_saquarema_state";
+let activeDay = 0;
+let state = defaultState();
+let renderTimer = null;
+
+function defaultState(){
+  return {
+    period:"",
+    includeEmpty:false,
+    days:DAY_NAMES.map(([key,label])=>({key,label,date:"",events:[]}))
+  };
+}
+function esc(v){
+  return String(v ?? "").replace(/[&<>"']/g, m=>({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#039;"}[m]));
+}
+function uid(){
+  return Math.random().toString(36).slice(2)+Date.now().toString(36);
+}
+function persist(){
+  state.period = document.getElementById("period").value;
+  state.includeEmpty = document.getElementById("includeEmpty").checked;
+  localStorage.setItem(STORAGE_KEY, JSON.stringify(state));
+}
+function restore(){
+  try{
+    const raw = localStorage.getItem(STORAGE_KEY) || localStorage.getItem("agenda_univassouras_state");
+    if(raw){
+      const parsed = JSON.parse(raw);
+      if(parsed && parsed.days && parsed.days.length===7) state=parsed;
+    }
+  }catch(e){}
+}
+function init(){
+  restore();
+  if(location.hash==="#demo") loadDemo();
+  document.getElementById("period").value=state.period||"";
+  document.getElementById("includeEmpty").checked=!!state.includeEmpty;
+  drawTabs();
+  selectDay(0);
+  renderPreview();
+}
+function drawTabs(){
+  const tabs=document.getElementById("dayTabs");
+  tabs.innerHTML="";
+  state.days.forEach((d,i)=>{
+    const b=document.createElement("button");
+    b.className="tab"+(i===activeDay?" active":"");
+    b.textContent=d.label.replace("-feira","");
+    b.onclick=()=>selectDay(i);
+    tabs.appendChild(b);
+  });
+}
+function selectDay(i){
+  activeDay=i;
+  drawTabs();
+  document.getElementById("dayDate").value=state.days[i].date||"";
+  clearEventForm();
+  drawEventList();
+}
+function updateDayDate(v){
+  state.days[activeDay].date=v;
+  persist(); renderPreviewDebounced();
+}
+function clearEventForm(){
+  document.getElementById("editingIndex").value="-1";
+  document.getElementById("evTime").value="";
+  document.getElementById("evKind").value="Atividade";
+  document.getElementById("evTitle").value="";
+  document.getElementById("evCourse").value="";
+  document.getElementById("evLocation").value="";
+  document.getElementById("evMode").value="Presencial";
+  const btn=document.querySelector(".event-form .btn.primary");
+  btn.textContent="Adicionar evento";
+}
+function getEventForm(){
+  return {
+    id:uid(),
+    time:document.getElementById("evTime").value.trim(),
+    kind:document.getElementById("evKind").value.trim()||"Atividade",
+    title:document.getElementById("evTitle").value.trim(),
+    course:document.getElementById("evCourse").value.trim(),
+    location:document.getElementById("evLocation").value.trim(),
+    mode:document.getElementById("evMode").value
+  };
+}
+function addOrUpdateEvent(){
+  const e=getEventForm();
+  if(!e.title){
+    alert("Informe o título do evento.");
+    return;
+  }
+  const idx=Number(document.getElementById("editingIndex").value);
+  if(idx>=0){
+    e.id=state.days[activeDay].events[idx].id || e.id;
+    state.days[activeDay].events[idx]=e;
+  }else{
+    state.days[activeDay].events.push(e);
+  }
+  clearEventForm(); drawEventList(); persist(); renderPreview();
+}
+function editEvent(i){
+  const e=state.days[activeDay].events[i];
+  document.getElementById("editingIndex").value=i;
+  document.getElementById("evTime").value=e.time||"";
+  document.getElementById("evKind").value=e.kind||"Atividade";
+  document.getElementById("evTitle").value=e.title||"";
+  document.getElementById("evCourse").value=e.course||"";
+  document.getElementById("evLocation").value=e.location||"";
+  document.getElementById("evMode").value=e.mode||"Presencial";
+  document.querySelector(".event-form .btn.primary").textContent="Salvar alteração";
+  window.scrollTo({top:0,behavior:"smooth"});
+}
+function deleteEvent(i){
+  if(!confirm("Excluir este evento?")) return;
+  state.days[activeDay].events.splice(i,1);
+  drawEventList(); persist(); renderPreview();
+}
+function moveEvent(i,delta){
+  const arr=state.days[activeDay].events;
+  const j=i+delta;
+  if(j<0||j>=arr.length) return;
+  [arr[i],arr[j]]=[arr[j],arr[i]];
+  drawEventList(); persist(); renderPreview();
+}
+function drawEventList(){
+  const box=document.getElementById("eventList");
+  const arr=state.days[activeDay].events;
+  if(!arr.length){
+    box.innerHTML='<div class="no-events-msg">Nenhum evento cadastrado neste dia.</div>';
+    return;
+  }
+  box.innerHTML=arr.map((e,i)=>`
+    <div class="event-item">
+      <div class="title">${esc(e.time)} • ${esc(e.kind)}: ${esc(e.title)}</div>
+      <div class="meta">${esc(e.course)}${e.location?" • "+esc(e.location):""}</div>
+      <div class="event-actions">
+        <button onclick="editEvent(${i})">Editar</button>
+        <button onclick="moveEvent(${i},-1)">↑</button>
+        <button onclick="moveEvent(${i},1)">↓</button>
+        <button onclick="deleteEvent(${i})">Excluir</button>
+      </div>
+    </div>
+  `).join("");
+}
+
+function dayBlockHTML(day, events, continuation=false){
+  const cards = events.length ? events.map(e=>`
+    <div class="event-card">
+      <div class="time-pill">${esc(e.time||"Horário")}</div>
+      <div>
+        <div class="event-title">${esc(e.kind||"Atividade")}: “${esc(e.title||"Evento")}”</div>
+        ${e.course?`<div class="event-course">${esc(e.course)}</div>`:""}
+        ${e.location?`<div class="event-location">${e.mode==="Remoto"?"▣":"📍"} ${esc(e.location)}</div>`:""}
+      </div>
+    </div>
+  `).join("") : `<div class="empty-card">Nenhum evento cadastrado para este dia.</div>`;
+
+  return `
+    <section class="day-block">
+      <div class="day-head">
+        <div class="day-name">${esc(day.key)}</div>
+        <div class="date-pill">${esc(day.date||"--/--")}</div>
+      </div>
+      <div class="subtitle">
+        <span>ENIC 2026</span>
+        ${continuation?'<span class="cont-tag">CONTINUAÇÃO</span>':""}
+      </div>
+      ${cards}
+    </section>
+  `;
+}
+function measureBlock(day,events,continuation=false){
+  const box=document.getElementById("measureBox");
+  box.innerHTML=dayBlockHTML(day,events,continuation);
+  const h=box.firstElementChild.getBoundingClientRect().height;
+  box.innerHTML="";
+  return h;
+}
+function newContentPage(){
+  const wrap=document.createElement("div");
+  wrap.className="sheet-wrap";
+  wrap.innerHTML=`
+    <div class="sheet content-page">
+      <div class="page-body"></div>
+      <div class="footer">
+        <div><div class="logo-main">UNIVASSOURAS</div><div class="logo-sub">Campus Universitário de Saquarema</div></div>
+        <div class="tagline"></div>
+      </div>
+    </div>`;
+  return wrap;
+}
+function renderPreview(){
+
+  state.period =
+    document.getElementById("period").value;
+
+  state.includeEmpty =
+    document.getElementById("includeEmpty").checked;
+
+  persist();
+
+  const root =
+    document.getElementById("previewPages");
+
+  root.innerHTML="";
+
+
+  // CAPA
+
+  const coverWrap =
+    document.createElement("div");
+
+  coverWrap.className="sheet-wrap";
+
+  coverWrap.innerHTML=`
+    <div class="sheet cover">
+      <div class="period-pill">
+        ${esc(
+          state.period ||
+          ""
+        )}
+      </div>
+    </div>
+  `;
+
+  root.appendChild(coverWrap);
+
+
+
+  // CONTROLE DA PÁGINA
+
+  let page=null;
+  let body=null;
+
+  let used=0;
+  let blockCount=0;
+
+
+
+  function startPage(){
+
+    page=newContentPage();
+
+    root.appendChild(page);
+
+    body=
+      page.querySelector(".page-body");
+
+    used=0;
+    blockCount=0;
+  }
+
+
+
+  // ADICIONA UM BLOCO DE DIA
+
+  function appendBlock(
+    day,
+    events,
+    continuation
+  ){
+
+    const holder=
+      document.createElement("div");
+
+    holder.innerHTML=
+      dayBlockHTML(
+        day,
+        events,
+        continuation
+      );
+
+    body.appendChild(
+      holder.firstElementChild
+    );
+
+
+    const blockHeight=
+      measureBlock(
+        day,
+        events,
+        continuation
+      );
+
+
+    used +=
+      (blockCount
+        ? BETWEEN_BLOCKS
+        : 0)
+      +
+      blockHeight;
+
+
+    blockCount++;
+  }
+
+
+
+  // ESPAÇO DISPONÍVEL NA PÁGINA
+
+  function availableHeight(){
+
+    return (
+      PACK_HEIGHT
+      -
+      used
+      -
+      (
+        blockCount
+        ? BETWEEN_BLOCKS
+        : 0
+      )
+    );
+  }
+
+
+
+  // CALCULA QUANTOS EVENTOS CABEM
+
+  function maxEventsThatFit(
+    day,
+    events,
+    startIndex,
+    continuation
+  ){
+
+    const available=
+      availableHeight();
+
+    let best=0;
+
+
+    for(
+      let end=startIndex+1;
+      end<=events.length;
+      end++
+    ){
+
+      const candidate=
+        events.slice(
+          startIndex,
+          end
+        );
+
+
+      const h=
+        measureBlock(
+          day,
+          candidate,
+          continuation
+        );
+
+
+      if(h<=available){
+
+        best=
+          end-startIndex;
+
+      }else{
+
+        break;
+
+      }
+
+    }
+
+
+    return best;
+  }
+
+
+
+  // PRIMEIRA PÁGINA
+
+  startPage();
+
+
+
+  // PROCESSA TODOS OS DIAS
+
+  for(const day of state.days){
+
+    const events=
+      day.events || [];
+
+
+
+    // DIA SEM EVENTOS
+
+    if(!events.length){
+
+      if(!state.includeEmpty)
+        continue;
+
+
+      const h=
+        measureBlock(
+          day,
+          [],
+          false
+        );
+
+
+      if(
+        blockCount &&
+        h > availableHeight()
+      ){
+
+        startPage();
+
+      }
+
+
+      appendBlock(
+        day,
+        [],
+        false
+      );
+
+
+      continue;
+    }
+
+
+
+    // EVENTOS DO DIA
+
+    let index=0;
+    let continuation=false;
+
+
+
+    while(
+      index < events.length
+    ){
+
+
+      // Vê quantos eventos cabem
+      // no espaço restante
+
+      let fit=
+        maxEventsThatFit(
+          day,
+          events,
+          index,
+          continuation
+        );
+
+
+
+      // Se nenhum couber,
+      // abre uma nova página
+
+      if(fit===0){
+
+        if(blockCount>0){
+
+          startPage();
+
+          continue;
+
+        }
+
+
+        // Segurança contra evento
+        // excepcionalmente grande
+
+        fit=1;
+
+      }
+
+
+
+      // Coloca os eventos
+      // que conseguiram caber
+
+      appendBlock(
+
+        day,
+
+        events.slice(
+          index,
+          index+fit
+        ),
+
+        continuation
+
+      );
+
+
+      index += fit;
+
+
+      // Se restarem eventos do mesmo dia,
+      // o próximo bloco será continuação
+
+      continuation=true;
+
+    }
+
+  }
+
+
+
+  // REMOVE PÁGINA VAZIA
+
+  if(
+    root.lastElementChild &&
+
+    root.lastElementChild
+      !== coverWrap &&
+
+    root.lastElementChild
+      .querySelector(".page-body") &&
+
+    !root.lastElementChild
+      .querySelector(".day-block")
+  ){
+
+    root.lastElementChild.remove();
+
+  }
+
+}
+function renderPreviewDebounced(){
+  clearTimeout(renderTimer);
+  renderTimer=setTimeout(renderPreview,250);
+}
+function printPDF(){
+  renderPreview();
+  setTimeout(()=>window.print(),120);
+}
+function saveJSON(){
+  persist();
+  const blob=new Blob([JSON.stringify(state,null,2)],{type:"application/json"});
+  const a=document.createElement("a");
+  a.href=URL.createObjectURL(blob);
+  a.download="agenda_eventos_saquarema.json";
+  a.click();
+  URL.revokeObjectURL(a.href);
+}
+function loadJSONFile(ev){
+  const f=ev.target.files[0];
+  if(!f) return;
+  const r=new FileReader();
+  r.onload=()=>{
+    try{
+      const obj=JSON.parse(r.result);
+      if(!obj.days||obj.days.length!==7) throw new Error();
+      state=obj;
+      document.getElementById("period").value=state.period||"";
+      document.getElementById("includeEmpty").checked=!!state.includeEmpty;
+      selectDay(0);persist();renderPreview();
+    }catch(e){alert("Arquivo JSON inválido.");}
+  };
+  r.readAsText(f);
+  ev.target.value="";
+}
+function clearAll(){
+  if(!confirm("Apagar todos os eventos e datas desta semana?")) return;
+  state=defaultState();
+  document.getElementById("period").value="";
+  document.getElementById("includeEmpty").checked=false;
+  selectDay(0);persist();renderPreview();
+}
+function loadDemo(){
+  state=defaultState();
+  state.period="05/10 a 10/10";
+  state.days[0].date="05/10";
+  state.days[0].events=[
+    {id:uid(),time:"10h às 12h",kind:"Atividade",title:"Dos sinais clínicos à imagem: como a ultrassonografia abdominal guia o raciocínio clínico",course:"Medicina Veterinária - Prof. Daniel Carvalho Hainfellner",location:"Campus 3 - sala de aula",mode:"Presencial"}
+  ];
+  state.days[1].date="06/10";
+  state.days[1].events=[
+    {id:uid(),time:"08h às 13h",kind:"Atividade",title:"Visita ao Apiário Prazer do Campo",course:"Medicina Veterinária - Prof. Laura Ribeiro C. de Oliveira",location:"Jaconé, Saquarema",mode:"Presencial"},
+    {id:uid(),time:"18h às 22h",kind:"Atividade",title:"Semana do Contador 2026 - Carreira, Ética e Tecnologia na Profissão Contábil",course:"Ciências Contábeis - Prof. Polianna R. Fonseca",location:"Campus 1 - Auditório",mode:"Presencial"}
+  ];
+  state.days[2].date="07/10";
+  state.days[2].events=[
+    {id:uid(),time:"18h50",kind:"Atividade",title:"Engenharia Civil de Portas Abertas",course:"Engenharia Civil - Prof. Mariá Toledo",location:"Campus 3 - Sala de aula",mode:"Presencial"}
+  ];
+}
+window.addEventListener("beforeprint",renderPreview);
+init();
+</script>
+</body>
+</html>
