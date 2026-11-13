@@ -1,0 +1,31 @@
+SITE DE AGENDAS — TEMA DE CORES FLIS
+================================
+
+Arquivos para publicação no GitHub Pages:
+  index.html        — Tela inicial: escolha de campus.
+  saquarema.html    — Gerador de agendas de Saquarema.
+  marica.html       — Gerador de agendas de Maricá / FACMAR.
+
+Coloque os três HTMLs na mesma pasta do seu repositório.
+As capas são referenciadas com os nomes já usados no projeto:
+  Foto_Enic_Saquarema.png
+  Foto_Enic_Marica.png
+Mantenha as imagens nessa mesma pasta, com letras maiúsculas/minúsculas idênticas.
+As imagens NÃO estão incluídas neste ZIP. Elas mantêm a arte ENIC original;
+para uma capa com identidade FLIS, substitua as imagens por artes próprias
+e atualize as referências CSS .cover.
+
+Paleta:
+  Azul-marinho      #052964 — textos e fundo de páginas
+  Rosa-magenta      #E1084D — botões e destaques
+  Azul vibrante     #1389E8 — detalhes
+  Amarelo-dourado   #F9B308 — datas, divisórias
+  Verde             #70A246 — decoração
+  Branco            #FFFFFF — cards e áreas de leitura
+
+A agenda de cada unidade fica salva no localStorage do próprio navegador:
+  agenda_univassouras_saquarema
+  agenda_univassouras_marica
+O formato JSON importado/exportado foi preservado (period, includeEmpty, days).
+Para gerar PDF: Gerar PDF -> Salvar como PDF, com cores de fundo ativadas.
+A impressão está configurada para retrato 135 mm x 240 mm, proporção 9:16.
